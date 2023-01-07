@@ -15,7 +15,7 @@
           <a class="nav-link" href="register">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="login">Orders</a>
+          <a class="nav-link" href="login">Reservations</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="../assets/config/logout.php">Logout</a>
