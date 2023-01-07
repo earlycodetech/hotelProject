@@ -12,7 +12,7 @@
           <a class="nav-link active" aria-current="page" href="dashboard">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="register">Profile</a>
+          <a class="nav-link" href="profile">Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="login">Reservations</a>

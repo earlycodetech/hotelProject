@@ -50,11 +50,15 @@
                         </span>
                     </p>
                     <p class="border p-2 mb-3 fw-bold">
+                        Gender: <span class="text-capitalize fw-lighter">
+                            <?php echo $row['gender']; ?>
+                        </span>
+                    </p>
+                    <p class="border p-2 mb-3 fw-bold">
                         Date Registerd: <span class="text-capitalize fw-lighter">
                             <?php 
                                 $date = date_create($row['date_created']);
                                echo date_format($date, "F, jS. Y");
-                                
                             ?>
                         </span>
                     </p>
