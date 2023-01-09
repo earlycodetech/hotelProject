@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-end mb-4">
-                        <img src="../assets/img/logo.png" alt="avatar" width="100"  class="img-thumbnail shadow">
+                    <img src="../assets/img/uploads/<?php echo $row['avatar'].'?'.mt_rand() ?>" alt="avatar" width="100"  class="img-thumbnail shadow d-block mx-auto my-2">
                     </div>
 
                     <p class="border p-2 mb-3 fw-bold">

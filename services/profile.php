@@ -29,23 +29,30 @@
     <section>
         <div class="container pt-4">
             <div class="card">
+                <?php echo successMsg(); echo errorMsg(); ?>
                 <div class="card-body">
                     <div class="d-flex justify-content-end mb-4">
-                        <img src="../assets/img/logo.png" alt="avatar" width="100"  class="img-thumbnail shadow">
+                        <form action="../assets/config/file_upload.php" enctype="multipart/form-data" method="post">
+                            <img src="../assets/img/uploads/<?php echo $row['avatar'].'?'.mt_rand() ?>" alt="avatar" width="100"  class="img-thumbnail shadow d-block mx-auto my-2">
+                            <div class="input-group">
+                                <input type="file" name="file" class="form-control">
+                                <button class="btn btn-primary" name="upload">Upload</button>
+                            </div>
+                        </form>
                     </div>
 
-                    <form action="" method="post">
+                    <form action="../assets/config/profile_update.php" method="post">
                         <label>Full Name:</label>
-                        <input type="text" value="<?php echo $row['full_name'] ?>" class="form-control mb-3">
+                        <input type="text" name="fname" value="<?php echo $row['full_name'] ?>" class="form-control mb-3">
 
                         <label>Email:</label>
                         <input type="email" value="<?php echo $row['email'] ?>" readonly class="form-control mb-3">
 
                         <label>Phone:</label>
-                        <input type="tel" value="<?php echo $row['phone'] ?>" class="form-control mb-3">
+                        <input type="tel" name="phone" value="<?php echo $row['phone'] ?>" class="form-control mb-3">
 
                         <label>Gender:</label>
-                        <select name="" class="form-select">
+                        <select name="gender" class="form-select">
                             <option value="<?php echo $row['gender'] ?>" selected>
                                 <?php echo ucwords($row['gender']) ?>
                             </option>
@@ -54,7 +61,7 @@
                         </select>
 
 
-                        <button type="submit" class="btn btn-primary my-3">Update</button>
+                        <button type="submit" class="btn btn-primary my-3" name="update">Update</button>
                     </form>
 
                 </div>
