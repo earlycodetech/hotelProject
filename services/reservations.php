@@ -58,10 +58,11 @@ $row = mysqli_fetch_assoc($query);
                                                         <?php echo $row['room_name'] ?> <?php echo "₦". number_format($row['room_price'], 2,'.',','); ?>
 
                                                     </option>
+
                                         <?php } ?>
                                      
                                     </select>
-                                    <label >No of Rooms</label>
+                                    <label class="room">No of Rooms</label>
                                     <input type="number" name="numroom" class="form-control" value="1" min="1" >
                                     <label >Check In Date</label>
                                     <input type="datetime-local" name="checkin" class="form-control" >
