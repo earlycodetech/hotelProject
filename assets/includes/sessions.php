@@ -45,8 +45,15 @@
     }
 
 
+    // Checks if a user is logged in
     function authGuard(){
         if (!isset($_SESSION['user'])) {
+           header("Location: ../login");
+        }
+    }
+    // Checks if a user is logged in and is admin
+    function adminGuard(){
+        if (!isset($_SESSION['user']) || $_SESSION['role'] != 'admin') {
            header("Location: ../login");
         }
     }
