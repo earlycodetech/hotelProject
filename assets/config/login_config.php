@@ -52,9 +52,14 @@ if (!isset($_POST['login'])) {
             } else {
                 // Create a new session to store the current user
                 $_SESSION['user'] = $row['id'];
+                $_SESSION['role'] = $row['user_role'];
                 
                 //   Redirect the user to the dashboard page
-                header("Location: ../../services/dashboard");
+                if ($row['user_role'] ===  'admin') {
+                    header("Location: ../../admin/dashboard");
+                }else{
+                    header("Location: ../../services/dashboard");
+                }
             }
         }
     }
