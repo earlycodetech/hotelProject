@@ -31,7 +31,8 @@ $row = mysqli_fetch_assoc($query);
     <section>
         <div class="container pt-4">
             <div class="card p-2">
-                <?php echo successMsg(); echo errorMsg(); ?>
+                <?php echo successMsg();
+                echo errorMsg(); ?>
                 <div class="text-end my-3">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -47,27 +48,27 @@ $row = mysqli_fetch_assoc($query);
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-start">
-                                    <label >Select Room</label>
+                                    <label>Select Room</label>
                                     <select name="room" class="form-select mb-3">
-                                        <?php 
-                                            $sql = "SELECT * FROM room_details";
-                                            $query = mysqli_query($connectDB,$sql);
-                                            while($row = mysqli_fetch_assoc($query)){?> 
+                                        <?php
+                                        $sql = "SELECT * FROM room_details";
+                                        $query = mysqli_query($connectDB, $sql);
+                                        while ($row = mysqli_fetch_assoc($query)) { ?>
 
-                                                    <option value="<?php echo $row['id'] ?>">
-                                                        <?php echo $row['room_name'] ?> <?php echo "₦". number_format($row['room_price'], 2,'.',','); ?>
+                                            <option value="<?php echo $row['id'] ?>">
+                                                <?php echo $row['room_name'] ?> <?php echo "₦" . number_format($row['room_price'], 2, '.', ','); ?>
 
-                                                    </option>
+                                            </option>
 
                                         <?php } ?>
-                                     
+
                                     </select>
                                     <label class="room">No of Rooms</label>
-                                    <input type="number" name="numroom" class="form-control" value="1" min="1" >
-                                    <label >Check In Date</label>
-                                    <input type="datetime-local" name="checkin" class="form-control" >
-                                    <label >Check Out Date</label>
-                                    <input type="datetime-local" name="checkout" class="form-control" >
+                                    <input type="number" name="numroom" class="form-control" value="1" min="1">
+                                    <label>Check In Date</label>
+                                    <input type="datetime-local" name="checkin" class="form-control">
+                                    <label>Check Out Date</label>
+                                    <input type="datetime-local" name="checkout" class="form-control">
 
                                 </div>
                                 <div class="modal-footer">
@@ -87,16 +88,58 @@ $row = mysqli_fetch_assoc($query);
                                 <th scope="row">No Of Rooms</th>
                                 <th scope="row">Check In </th>
                                 <th scope="row">Check Out </th>
+                                <th scope="row">Total</th>
+
                                 <th scope="row">Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($query)) { ?>
+                            <?php
+                            $id = $_SESSION['user'];
+                            // $sql = "SELECT * FROM reservations WHERE userid = '$id' ORDER BY id ASC";
+                            // $sql = "SELECT * FROM reservations WHERE userid = '$id' ORDER BY id DESC  LIMIT 4,2";
+
+                            // $sql = "SELECT *, room_details.room_name AS r_name FROM reservations 
+                            // INNER JOIN room_details ON reservations.roomid = room_details.id
+                            // WHERE reservations.userid = '$id' 
+                            // ORDER BY reservations.id DESC  
+                            // LIMIT 10";
+                            $sql = "SELECT *, reservations.date_created AS date_c 
+                                    FROM reservations 
+                                    INNER JOIN room_details ON reservations.roomid = room_details.id
+                                    WHERE userid = '$id' 
+                                    ORDER BY reservations.id DESC  
+                                    LIMIT 0,20";
+                            $query = mysqli_query($connectDB, $sql);
+
+                            while ($row = mysqli_fetch_assoc($query)) {
+                            ?>
                                 <tr>
-                                    <td><?php echo $row['full_name'] ?></td>
-                                    <td><?php echo $row['email'] ?></td>
-                                    <td><?php echo $row['phone'] ?></td>
-                                    <td><?php echo $row['date_created'] ?></td>
+                                    <td><?php echo $row['room_name'] ?></td>
+                                    <td class="text-center"><?php echo $row['num_rooms'] ?></td>
+                                    <td>
+                                        <?php
+                                            $date = date_create($row['checkin']);
+                                            echo date_format($date, "F, jS. Y h:i a");
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            $date = date_create($row['checkout']);
+                                            echo date_format($date, "F, jS. Y h:i a");
+                                        ?>
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <?php
+                                            echo "₦ ". number_format($row['total_amount'],2,'.',',');
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            $date = date_create($row['date_c']);
+                                            echo date_format($date, "F, jS. Y h:i a");
+                                        ?>
+                                    </td>
                                 </tr>
                             <?php } ?>
                         </tbody>
