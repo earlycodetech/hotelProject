@@ -24,30 +24,55 @@
       else{
         
         // Save the Data
+        $sql = "SELECT room_price,room_stock FROM room_details WHERE id = '$room' ";
+        $query = mysqli_query($connectDB,$sql);
 
-        // Create a SQL command Statement: INSERT STATEMENT
-        $sql = "INSERT INTO reservations(userid,roomid,num_rooms,checkin,checkout) VALUES(?,?,?,?,?)";
+        $row = mysqli_fetch_assoc($query); 
 
-        // Initialize Connection to database
-        $stmt = mysqli_stmt_init($connectDB);
-
-        // Prepare Connection with Statement
-        mysqli_stmt_prepare($stmt,$sql);
-
-        // Bind the parameters to the placeholders
-        mysqli_stmt_bind_param($stmt,"iiiss", $id,$room,$numroom,$checkin,$checkout);
-
-        // Execute the Statement
-        $execute = mysqli_stmt_execute($stmt);
-
-        if ($execute) {
-            $_SESSION['success_msg'] = "Reserved successfully!";
-            header("Location: ../../services/reservations");
-        }else{
-          $_SESSION['error_msg'] = "Oops, something went wrong!";
+        // var_dump($row);
+        if (intval($row['room_stock'] < $numroom)) {
+          $_SESSION['error_msg'] = "Available rooms: $row[room_stock] !";
           header("Location: ../../services/reservations");
         }
-        // var_dump($stmt);
+        else{
+          
+          $total = intval($row['room_price']) * intval($numroom);
+          $remainingRooms = intval($row['room_stock']) - intval($numroom);
+
+
+          // Create a SQL command Statement: INSERT STATEMENT
+          $sql = "INSERT INTO reservations(userid,roomid,num_rooms,total_amount,checkin,checkout) VALUES(?,?,?,?,?,?)";
+  
+          // Initialize Connection to database
+          $stmt = mysqli_stmt_init($connectDB);
+  
+          // Prepare Connection with Statement
+          mysqli_stmt_prepare($stmt,$sql);
+  
+          // Bind the parameters to the placeholders
+          mysqli_stmt_bind_param($stmt,"iiiiss", $id,$room,$numroom,$total,$checkin,$checkout);
+  
+          // Execute the Statement
+          $execute = mysqli_stmt_execute($stmt);
+  
+          if ($execute) {
+              $sql = "UPDATE room_details SET room_stock = '$remainingRooms' WHERE id = '$room' ";
+              $query = mysqli_query($connectDB,$sql);
+
+              if ($query) {
+                $_SESSION['success_msg'] = "Reserved successfully!";
+                header("Location: ../../services/reservations");
+              } else {
+                $_SESSION['error_msg'] = "Oops, something went wrong";
+                header("Location: ../../services/reservations");
+              }
+              
+          }else{
+            $_SESSION['error_msg'] = "Oops, something went wrong!";
+            header("Location: ../../services/reservations");
+          }
+          // var_dump($stmt);
+        }
 
 
       }
