@@ -35,17 +35,20 @@ $row = mysqli_fetch_assoc($query);
                 echo errorMsg(); ?>
                 <div class="text-end my-3">
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
                         Make Reservation
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form action="../assets/config/reservation_config.php" method="POST" class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Make Reservation</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-start">
                                     <label>Select Room</label>
@@ -53,12 +56,13 @@ $row = mysqli_fetch_assoc($query);
                                         <?php
                                         $sql = "SELECT * FROM room_details";
                                         $query = mysqli_query($connectDB, $sql);
-                                        while ($row = mysqli_fetch_assoc($query)) { ?>
+                                        while ($row1 = mysqli_fetch_assoc($query)) { ?>
 
-                                            <option value="<?php echo $row['id'] ?>">
-                                                <?php echo $row['room_name'] ?> <?php echo "₦" . number_format($row['room_price'], 2, '.', ','); ?>
+                                        <option value="<?php echo $row['id'] ?>">
+                                            <?php echo $row1['room_name'] ?>
+                                            <?php echo "₦" . number_format($row1['room_price'], 2, '.', ','); ?>
 
-                                            </option>
+                                        </option>
 
                                         <?php } ?>
 
@@ -72,8 +76,71 @@ $row = mysqli_fetch_assoc($query);
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                     <button type="submit" name="makeReserve" class="btn btn-primary">Reserve</button>
+
+                                    <!--============================================================ PAYMENT CODE START =============================================================== -->
+
+                                    <small>Pay online with your debit card</small> <br>
+                                    <input type="button" class="btn-success btn" style="cursor:pointer;" value="Pay Now"
+                                        id="submit" />
+
+                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+                                    </script>
+                                    <script type="text/javascript"
+                                        src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+                                    <script type="text/javascript">
+                                    document.addEventListener("DOMContentLoaded", function(event) {
+                                        document.getElementById('submit').addEventListener('click', function() {
+
+                                            var flw_ref = "",
+                                                chargeResponse = "",
+                                                trxref = "FDKHGK" + Math.random(),
+                                                API_publicKey = "FLWPUBK_TEST-83af4504f6370dc6576a13be3875e79b-X";
+                                            //Always change flutterwave public key to your own key
+
+                                            //   ENTER ALL ESSENTIAL VARIABLES
+                                            // var amount_ea = "50000";
+                                            var amount_ea = <?php echo 10000; ?>;
+                                            var email_ea = <?php echo (json_encode($row['email'])); ?>;
+                                            var phone_ea = <?php echo (json_encode($row['phone'])); ?>;
+                                            var ref_ea = <?php echo (json_encode($ref = "HPP".rand(100000,999999))); ?>;
+
+                                            getpaidSetup({
+                                                PBFPubKey: API_publicKey,
+                                                customer_email: email_ea,
+                                                amount: amount_ea,
+                                                customer_phone: phone_ea,
+                                                currency: "NGN",
+                                                txref: ref_ea,
+                                                meta: [{
+                                                    metaname: "EA-NG",
+                                                    metavalue: "NG"
+                                                }],
+                                                onclose: function(response) {},
+                                                callback: function(response) {
+                                                    txref = response.data.txRef,
+                                                        chargeResponse = response.data
+                                                        .chargeResponseCode;
+                                                    if (chargeResponse == "00" ||
+                                                        chargeResponse == "0") {
+                                                        //   if payment failed
+                                                        window.location = "payment-failed";
+                                                    } else {
+                                                        //when successful
+                                                        window.location =
+                                                            "payment-success?id=2&amount=2000&ref=sijoxaskxmaoncpo";
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                    </script>
+                                    <!-- END OF PAYMENT SCRIPT -->
+
+                                    <!--=============================================================== PAYMENT CODE END ============================================================-->
+
                                 </div>
                             </form>
                         </div>
@@ -96,51 +163,51 @@ $row = mysqli_fetch_assoc($query);
                         <tbody>
                             <?php
                             $id = $_SESSION['user'];
-                            // $sql = "SELECT * FROM reservations WHERE userid = '$id' ORDER BY id ASC";
-                            // $sql = "SELECT * FROM reservations WHERE userid = '$id' ORDER BY id DESC  LIMIT 4,2";
+                            // $sql = "SELECT * FROM reservation WHERE userid = '$id' ORDER BY id ASC";
+                            // $sql = "SELECT * FROM reservation WHERE userid = '$id' ORDER BY id DESC  LIMIT 4,2";
 
-                            // $sql = "SELECT *, room_details.room_name AS r_name FROM reservations 
-                            // INNER JOIN room_details ON reservations.roomid = room_details.id
-                            // WHERE reservations.userid = '$id' 
-                            // ORDER BY reservations.id DESC  
+                            // $sql = "SELECT *, room_details.room_name AS r_name FROM reservation 
+                            // INNER JOIN room_details ON reservation.roomid = room_details.id
+                            // WHERE reservation.userid = '$id' 
+                            // ORDER BY reservation.id DESC  
                             // LIMIT 10";
-                            $sql = "SELECT *, reservations.date_created AS date_c 
-                                    FROM reservations 
-                                    INNER JOIN room_details ON reservations.roomid = room_details.id
+                            $sql = "SELECT *, reservation.date_created AS date_c 
+                                    FROM reservation 
+                                    INNER JOIN room_details ON reservation.roomid = room_details.id
                                     WHERE userid = '$id' 
-                                    ORDER BY reservations.id DESC  
+                                    ORDER BY reservation.id DESC  
                                     LIMIT 0,20";
                             $query = mysqli_query($connectDB, $sql);
 
                             while ($row = mysqli_fetch_assoc($query)) {
                             ?>
-                                <tr>
-                                    <td><?php echo $row['room_name'] ?></td>
-                                    <td class="text-center"><?php echo $row['num_rooms'] ?></td>
-                                    <td>
-                                        <?php
+                            <tr>
+                                <td><?php echo $row['room_name'] ?></td>
+                                <td class="text-center"><?php echo $row['num_rooms'] ?></td>
+                                <td>
+                                    <?php
                                             $date = date_create($row['checkin']);
                                             echo date_format($date, "F, jS. Y h:i a");
                                         ?>
-                                    </td>
-                                    <td>
-                                        <?php
+                                </td>
+                                <td>
+                                    <?php
                                             $date = date_create($row['checkout']);
                                             echo date_format($date, "F, jS. Y h:i a");
                                         ?>
-                                    </td>
-                                    <td class="text-nowrap">
-                                        <?php
+                                </td>
+                                <td class="text-nowrap">
+                                    <?php
                                             echo "₦ ". number_format($row['total_amount'],2,'.',',');
                                         ?>
-                                    </td>
-                                    <td>
-                                        <?php
+                                </td>
+                                <td>
+                                    <?php
                                             $date = date_create($row['date_c']);
                                             echo date_format($date, "F, jS. Y h:i a");
                                         ?>
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             <?php } ?>
                         </tbody>
                     </table>

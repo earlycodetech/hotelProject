@@ -51,19 +51,19 @@ $row = mysqli_fetch_assoc($query);
                         <tbody>
                             <?php
                             $id = $_SESSION['user'];
-                            // $sql = "SELECT * FROM reservations WHERE userid = '$id' ORDER BY id ASC";
-                            // $sql = "SELECT * FROM reservations WHERE userid = '$id' ORDER BY id DESC  LIMIT 4,2";
+                            // $sql = "SELECT * FROM reservation WHERE userid = '$id' ORDER BY id ASC";
+                            // $sql = "SELECT * FROM reservation WHERE userid = '$id' ORDER BY id DESC  LIMIT 4,2";
 
-                            // $sql = "SELECT *, room_details.room_name AS r_name FROM reservations 
-                            // INNER JOIN room_details ON reservations.roomid = room_details.id
-                            // WHERE reservations.userid = '$id' 
-                            // ORDER BY reservations.id DESC  
+                            // $sql = "SELECT *, room_details.room_name AS r_name FROM reservation 
+                            // INNER JOIN room_details ON reservation.roomid = room_details.id
+                            // WHERE reservation.userid = '$id' 
+                            // ORDER BY reservation.id DESC  
                             // LIMIT 10";
-                            $sql = "SELECT *, reservations.date_created AS date_c, reservations.id AS r_id
-                                    FROM reservations 
-                                    INNER JOIN users ON reservations.userid = users.id
-                                    INNER JOIN room_details ON reservations.roomid = room_details.id
-                                    ORDER BY reservations.id DESC  
+                            $sql = "SELECT *, reservation.date_created AS date_c, reservation.id AS r_id
+                                    FROM reservation 
+                                    INNER JOIN users ON reservation.userid = users.id
+                                    INNER JOIN room_details ON reservation.roomid = room_details.id
+                                    ORDER BY reservation.id DESC  
                                     LIMIT 0,20";
                             $query = mysqli_query($connectDB, $sql);
 
@@ -84,12 +84,13 @@ $row = mysqli_fetch_assoc($query);
                                     <td>
                                         <div class="dropdown">
                                             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                               ..
+                                                ..
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><?php echo $row['r_id'] ?></li>
+                                                <!-- <li><?php echo $row['r_id'] ?></li> -->
                                                 <li><a class="dropdown-item" href="view-reservation?q=<?php echo $row['r_id']; ?>">View</a></li>
-                                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                                                <li><a class="dropdown-item" href="../assets/config/reservation_status?delete=<?php echo $row['r_id']; ?>" onclick="return confirm('Are you sure?')">Delete</a></li>
+
                                             </ul>
                                         </div>
                                     </td>
