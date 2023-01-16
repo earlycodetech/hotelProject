@@ -41,7 +41,7 @@
 
 
           // Create a SQL command Statement: INSERT STATEMENT
-          $sql = "INSERT INTO reservations(userid,roomid,num_rooms,total_amount,checkin,checkout) VALUES(?,?,?,?,?,?)";
+          $sql = "INSERT INTO reservation(userid,roomid,num_rooms,total_amount,checkin,checkout) VALUES(?,?,?,?,?,?)";
   
           // Initialize Connection to database
           $stmt = mysqli_stmt_init($connectDB);
