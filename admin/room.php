@@ -51,6 +51,7 @@ $row = mysqli_fetch_assoc($query);
 
 
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <?php include "../assets/includes/footer.php" ?>
 </body>
 
 </html>
