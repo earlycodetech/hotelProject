@@ -29,7 +29,7 @@ $row = mysqli_fetch_assoc($query);
 
 
     <section>
-        <div class="container pt-4">
+        <div class="container pt-4" style="height: 100%;">
             <div class="card p-2">
                 <?php echo successMsg();
                 echo errorMsg(); ?>
@@ -218,6 +218,7 @@ $row = mysqli_fetch_assoc($query);
 
 
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <?php include "../assets/includes/footer.php" ?>
 </body>
 
 </html>
