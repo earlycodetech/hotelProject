@@ -58,7 +58,7 @@ $row = mysqli_fetch_assoc($query);
                                         $query = mysqli_query($connectDB, $sql);
                                         while ($row1 = mysqli_fetch_assoc($query)) { ?>
 
-                                        <option value="<?php echo $row['id'] ?>">
+                                        <option value="<?php echo $row1['id'] ?>">
                                             <?php echo $row1['room_name'] ?>
                                             <?php echo "₦" . number_format($row1['room_price'], 2, '.', ','); ?>
 

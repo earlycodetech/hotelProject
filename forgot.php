@@ -19,20 +19,14 @@
 
 
     <div class="container mt-5">
-        <form action="assets/config/login_config.php" method="post" class="card mx-auto p-1" style="max-width: 600px;">
+        <form action="assets/config/forgot_config.php" method="post" class="card mx-auto p-1" style="max-width: 600px;">
             <?php echo errorMsg(); echo successMsg(); ?>
-            <h3 class="card-header text-center">Login to Your Account</h3>
+            <h3 class="card-header text-center">Forgot Password</h3>
             <div class="card-body">
                 <input placeholder="Email" name="email" type="email" class="form-control mb-3 shadow">
 
-
-                <input placeholder="Password" name="password" type="password" class="form-control mb-3 shadow">
-
-
-                <button name="login" type="submit" class="btn btn-primary my-2">Login</button>
-
-
-                <a href="forgot" class="d-block text-dark">Forgot Password</a>
+                <button class="btn btn-primary" name="forgot" type="submit">Send Token</button>
+                <a href="login" class="d-block text-dark my-3">Go to Login</a>
             </div>
         </form>
     </div>
